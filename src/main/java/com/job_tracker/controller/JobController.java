@@ -7,8 +7,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.job_tracker.Job;
+import com.job_tracker.service.JobService;
 @RestController
 public class JobController {
+    private final JobService jobService;
+    public JobController(JobService jobService){
+        this.jobService=jobService;
+    }
+
 
     @GetMapping("/welcome")
     public String welcome() {
@@ -32,7 +38,7 @@ public class JobController {
 
     @PostMapping("/jobs")
     public String createJob(@RequestBody Job job){
-        return "Job created for "+ job.getCompany();
+        return jobService.createJob(job);
     }
 
 }
