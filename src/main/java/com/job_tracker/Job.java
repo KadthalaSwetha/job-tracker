@@ -1,6 +1,17 @@
 package com.job_tracker;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
+
+@Entity
 public class Job {
+    @Id
+    @GeneratedValue
+    public Long id;
+    public Long getId(){
+        return id;
+    }
 
     private String company;
     private String role;
