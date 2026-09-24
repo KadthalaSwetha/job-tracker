@@ -1,6 +1,9 @@
 package com.job_tracker.controller;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,9 +33,13 @@ public class JobController {
         return jobService.getAllJobs();
     }
 
-    @GetMapping("/jobs/{id}")
-    public Job getJobById(@PathVariable Long id){
-        return jobService.getByID(id);
+   @GetMapping("/jobs/{id}")
+    public ResponseEntity<Job> getJobById(@PathVariable Long id) {
+        Optional<Job> job = jobService.getJobByID(id);
+        if (job.isPresent()) {
+            return ResponseEntity.ok(job.get());
+        }
+        return ResponseEntity.notFound().build();
     }
 
 
@@ -42,14 +49,15 @@ public class JobController {
     }
 
     @PostMapping("/jobs")
-    public Job createJob(@RequestBody Job job){
-        return jobService.createJob(job);
+    public ResponseEntity<Job> createJob(@RequestBody Job job) {
+        Job createdJob = jobService.createJob(job);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdJob);
     }
 
     @DeleteMapping("/jobs/{id}")
-    public String deleteJob(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteJob(@PathVariable Long id) {
         jobService.deleteJob(id);
-        return "Job deleted successfully";
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/jobs/{id}")

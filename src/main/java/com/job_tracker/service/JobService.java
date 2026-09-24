@@ -1,5 +1,6 @@
 package com.job_tracker.Service;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,8 @@ public class JobService {
         return JobRepository.findAll();
     }
 
-    public Job getByID(Long id){
-        return JobRepository.findById(id).orElse(null);
+    public Optional<Job> getJobByID(Long id){
+        return JobRepository.findById(id);
 
     }
 
