@@ -1,6 +1,5 @@
 package com.job_tracker.controller;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,11 +34,8 @@ public class JobController {
 
    @GetMapping("/jobs/{id}")
     public ResponseEntity<Job> getJobById(@PathVariable Long id) {
-        Optional<Job> job = jobService.getJobByID(id);
-        if (job.isPresent()) {
-            return ResponseEntity.ok(job.get());
-        }
-        return ResponseEntity.notFound().build();
+    Job job = jobService.getJobById(id);
+    return ResponseEntity.ok(job);
     }
 
 

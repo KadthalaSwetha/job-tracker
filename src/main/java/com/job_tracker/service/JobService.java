@@ -1,11 +1,11 @@
 package com.job_tracker.Service;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.job_tracker.Job;
 import com.job_tracker.Repository.JobRepository;
+import com.job_tracker.exception.JobNotFoundException;
 @Service
 public class JobService {
     public final JobRepository JobRepository;
@@ -23,10 +23,10 @@ public class JobService {
         return JobRepository.findAll();
     }
 
-    public Optional<Job> getJobByID(Long id){
-        return JobRepository.findById(id);
-
-    }
+    public Job getJobById(Long id) {
+        return JobRepository.findById(id).orElseThrow(() ->
+                    new JobNotFoundException("Job not found with id: " + id));
+}
 
     public void deleteJob(Long id) {
         JobRepository.deleteById(id);
