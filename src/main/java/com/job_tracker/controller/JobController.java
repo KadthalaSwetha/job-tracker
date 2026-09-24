@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.job_tracker.Job;
 import com.job_tracker.Service.JobService;
+
+import jakarta.validation.Valid;
 @RestController
 public class JobController {
     private final JobService jobService;
@@ -45,7 +47,7 @@ public class JobController {
     }
 
     @PostMapping("/jobs")
-    public ResponseEntity<Job> createJob(@RequestBody Job job) {
+    public ResponseEntity<Job> createJob(@Valid @RequestBody Job job) {
         Job createdJob = jobService.createJob(job);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdJob);
     }
