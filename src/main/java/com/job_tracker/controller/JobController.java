@@ -1,13 +1,17 @@
 package com.job_tracker.controller;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.job_tracker.Job;
-import com.job_tracker.service.JobService;
+import com.job_tracker.Service.JobService;
 @RestController
 public class JobController {
     private final JobService jobService;
@@ -22,14 +26,15 @@ public class JobController {
     }
 
      @GetMapping("/jobs")
-    public String getJobs() {
-        return "Here are your jobs";
+    public List<Job> getJobs() {
+        return jobService.getAllJobs();
     }
 
     @GetMapping("/jobs/{id}")
-    public String getJobById(@PathVariable int id){
-        return "you requested for the jobs with id :"+id;
+    public Job getJobById(@PathVariable Long id){
+        return jobService.getByID(id);
     }
+
 
     @GetMapping("/jobs/search")
     public String status(@RequestParam String status){
@@ -39,6 +44,17 @@ public class JobController {
     @PostMapping("/jobs")
     public Job createJob(@RequestBody Job job){
         return jobService.createJob(job);
+    }
+
+    @DeleteMapping("/jobs/{id}")
+    public String deleteJob(@PathVariable Long id) {
+        jobService.deleteJob(id);
+        return "Job deleted successfully";
+    }
+
+    @PutMapping("/jobs/{id}")
+    public Job updateJob(@PathVariable Long id, @RequestBody Job job) {
+        return jobService.updateJob(id, job);
     }
 
 }
